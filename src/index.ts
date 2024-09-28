@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
 import bodyParser from 'body-parser';
@@ -6,6 +7,10 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './router';
+
+// using the env file for secrets
+dotenv.config();
+require('dotenv').config({ path: "./.env.development" });
 
 const app = express();
 app.use(cors({
@@ -22,7 +27,7 @@ server.listen(8080, () => {
   console.log('Server running on http://localhost:8080/');
 });
 
-const MONGO_URL = "mongodb+srv://marlenewiesmair:RmwcEhLRw3OUmQbE@cluster0.fk8zsxw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URL = process.env.MONGO_DB_URL;
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
