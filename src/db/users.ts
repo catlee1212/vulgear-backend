@@ -7,7 +7,10 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true, selected: false },
     salt: { type: String, selected: false },
     sessionToken: { type: String, selected: false },
-  }
+  },
+  usedProducts: [
+    { productType: String, isUsed: Boolean, amountInStock: Number, id: Number }
+  ]
 });
 
 export const UserModel = mongoose.model('User', UserSchema);
@@ -22,3 +25,13 @@ export const createUser = (values: Record<string, any>) => new UserModel(values)
 
 export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id });
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values);
+
+const ProductSchema = new mongoose.Schema({
+  productType: { type: String, required: true },
+  isUsed: { type: Boolean, default: false },
+  amountInStock: { type: Number, default: 0 },
+});
+
+export const ProductModel = mongoose.model('Product', ProductSchema);
+
+export const createProduct = (values: Record<string, any>) => new ProductModel(values).save().then((product) => product.toObject());

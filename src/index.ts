@@ -13,12 +13,14 @@ dotenv.config();
 require('dotenv').config({ path: "./.env.development" });
 
 const app = express();
+app.use(cookieParser());
+
 app.use(cors({
   credentials: true,
+  origin: "http://localhost:5173"
 }))
 
 app.use(compression());
-app.use(cookieParser());
 app.use(bodyParser.json());
 
 const server = http.createServer(app);
